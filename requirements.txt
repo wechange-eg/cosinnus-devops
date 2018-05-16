@@ -1,0 +1,17 @@
+# this file only contains requirements not contained in the cosinnus projects' setup.py files
+
+-e git+git://github.com/sinnwerkstatt/django-awesome-avatar.git@master#egg=django-awesome-avatar
+-e git+git://github.com/Markush2010/django-bootstrap3.git@46a84044e89937ebe6128b2a8c560f141741a70e#egg=django_bootstrap3
+-e git+git://github.com/saschan/django-djajax.git@master#egg=django-djajax
+-e git+git://github.com/sinnwerkstatt/django-multiform.git@master#egg=django-multiform
+-e git+git://github.com/sinnwerkstatt/django-osm-field.git@gh-pages#egg=django-osm-field
+-e git+git://github.com/sinnwerkstatt/django-select2.git@master#egg=django-select2
+-e git+git://github.com/saschan/ethercalc-python.git@master#egg=ethercalc-python
+-e git+git://github.com/saschan/wagtail-modeltranslation.git@translatable-streamfields#egg=wagtail-modeltranslation
+-e git+git://github.com/praekelt/django-recaptcha.git@1.3.1#egg=django-recaptcha
+
+gunicorn==19.4.1
+psycopg2==2.5.1
+elasticsearch==1.7.0
+pyelasticsearch==1.4
+raven==5.8.1

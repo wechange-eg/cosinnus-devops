@@ -1,0 +1,15 @@
+# Cosinnus
+-e git+git://github.com/wechange-eg/cosinnus-core.git@master#egg=cosinnus
+-e git+git://github.com/wechange-eg/cosinnus-etherpad.git@master#egg=cosinnus-etherpad
+-e git+git://github.com/wechange-eg/cosinnus-event.git@master#egg=cosinnus-event
+-e git+git://github.com/wechange-eg/cosinnus-message.git@master#egg=cosinnus-message
+-e git+git://github.com/wechange-eg/cosinnus-file.git@master#egg=cosinnus-file
+-e git+git://github.com/wechange-eg/cosinnus-note.git@master#egg=cosinnus-note
+-e git+git://github.com/wechange-eg/cosinnus-notifications.git@master#egg=cosinnus-notifications
+-e git+git://github.com/wechange-eg/cosinnus-marketplace.git@master#egg=cosinnus-marketplace
+-e git+git://github.com/wechange-eg/cosinnus-poll.git@master#egg=cosinnus-poll
+-e git+git://github.com/wechange-eg/cosinnus-stream.git@master#egg=cosinnus-stream
+-e git+git://github.com/wechange-eg/cosinnus-todo.git@master#egg=cosinnus-todo
+
+# it is very important that the requirements.txt import comes AFTER the cosinnus projects!
+-r requirements.txt

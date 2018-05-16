@@ -1,0 +1,5 @@
+# this file can be used to install all the requirements for local develop installs, 
+# where the requirements from the cosinnus projects' setup.py files are not installed automatically
+
+-r ./../cosinnus-core/requirements.txt
+-r requirements.txt

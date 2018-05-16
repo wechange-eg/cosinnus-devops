@@ -1,0 +1,11 @@
+{% overextends 'cosinnus/navbar_icon_buttons.html' %}
+{% load i18n %}
+
+{% block extra_navbar_icon_buttons %}    
+    <li>
+        <a href="/faq/" title="{% trans "FAQs" %}">
+            <i class="fa fa-question"></i>
+            <span class="visible-xs-inline">&nbsp;{% trans "FAQ" %}</span>
+        </a>
+    </li>
+{% endblock extra_navbar_icon_buttons %}
