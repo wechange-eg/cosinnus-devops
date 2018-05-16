@@ -80,7 +80,7 @@ RECAPTCHA_USE_SSL = True
 COSINNUS_MICROSITE_DEFAULT_PUBLIC_APPS = ['cosinnus_file', 'cosinnus_event', 'cosinnus_etherpad', 'cosinnus_poll', 'cosinnus_marketplace',]
 
 COSINNUS_ETHERPAD_ENABLE_ETHERCALC = True
-COSINNUS_ETHERPAD_ETHERCALC_BASE_URL = 'https://calc.wachstumswende.de'
+COSINNUS_ETHERPAD_ETHERCALC_BASE_URL = 'https://calc.yourserver.com'
 
 # PIWIK site id, if wished
 PIWIK_SITE_ID = None # 2
