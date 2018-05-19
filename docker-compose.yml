@@ -6,12 +6,9 @@ services:
   web:
     build: .
     command: ["./docker-entrypoint.sh"]
-    #command: python manage.py runserver 0.0.0.0:8000
-    #    environment:
-    #      - DJANGO_SETTINGS_MODULE=devops.settings
-    #    volumes:
-    #        - .:/code
-    #      - ./docker-entrypoint.sh:/docker-entrypoint.sh
+    volumes:
+      - .:/code
+      - ./devops/settings_docker.py:/code/devops/settings.py
     ports:
       - "8000:8000"
     depends_on:
