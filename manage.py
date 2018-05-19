@@ -19,10 +19,8 @@ if __name__ == '__main__':
             raise Exception('You must supply the name of a cosinnus portal when ' + \
                 'using the %s flag!' % COSINNUS_PORTAL_ARG)
         args = args[:index] + args[index+2:]
-    
-    
+
     settings_path = ('devops.config_%s' % portal) if portal else 'devops.settings'
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', settings_path)
         
     execute_from_command_line(args)
-    
