@@ -4,20 +4,23 @@
 # we cannot use unicode_literals here, or smtplib will crash, expecting a str when reading the secret key
 
 from .default_settings import *
+import dj_database_url
 
 # change this in production!
 ALLOWED_HOSTS = ['*']
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'postgres',
-        'USER': 'postgres',
-        #'PASSWORD': '',
-        'HOST': 'db',
-        'PORT': '',
+DATABASES['default'] = dj_database_url.config(conn_max_age=600)
+if not DATABASES['default']:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME': 'postgres',
+            'USER': 'postgres',
+            #'PASSWORD': '',
+            'HOST': 'db',
+            'PORT': '',
+        }
     }
-}
 
 ADMINS = (
 )
