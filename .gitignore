@@ -27,3 +27,6 @@ media/*
 static-collected/*
 mail_local/*
 _ignoreme_*
+psql/
+mariadb/
+redis/
