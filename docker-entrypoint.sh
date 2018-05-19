@@ -10,4 +10,4 @@ python manage.py migrate
 
 # Start server
 echo "Starting server"
-python manage.py runserver 0.0.0.0:8000
+python manage.py runserver --settings=devops.settings 0.0.0.0:8000
