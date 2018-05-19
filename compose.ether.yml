@@ -29,8 +29,8 @@ services:
     image: ptman/etherpad
     ports:
       - "8002:9001"
-    volumes:
-      - ./settings.json:/opt/etherpad/settings.json
+#    volumes:
+#      - ./settings.json:/opt/etherpad/settings.json
     depends_on:
       - mariadb
   mariadb:
