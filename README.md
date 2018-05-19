@@ -5,7 +5,13 @@ This is the base project for wechange. It is mainly a configurable shell for the
 
 Note: The wechange project is often refered to as "neww" in code and imports and the internal apps and python Objects are named "cosinnus" for historical reasons. 
 
-# How to set up local development for wechange
+# Setup local development with Docker
+
+    git submodule init
+    git submodule update
+    docker-compose up
+
+# Setup local development manually
 
 This will set up a local development envirenment, getting you ready to work on wechange and all its internal apps.
 
