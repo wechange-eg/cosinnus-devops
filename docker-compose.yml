@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+  db:
+    image: postgres
+  web:
+    build: .
+    command: ["./docker-entrypoint.sh"]
+    volumes:
+      - .:/code
+      - ./devops/settings_docker.py:/code/devops/settings.py
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db

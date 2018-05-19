@@ -1,0 +1,33 @@
+[submodule "cosinnus-core"]
+	path = cosinnus-core
+	url = git@github.com:wechange-eg/cosinnus-core.git
+[submodule "cosinnus-etherpad"]
+	path = cosinnus-etherpad
+	url = git@github.com:wechange-eg/cosinnus-etherpad.git
+[submodule "cosinnus-event"]
+	path = cosinnus-event
+	url = git@github.com:wechange-eg/cosinnus-event.git
+[submodule "cosinnus-message"]
+	path = cosinnus-message
+	url = git@github.com:wechange-eg/cosinnus-message.git
+[submodule "cosinnus-file"]
+	path = cosinnus-file
+	url = git@github.com:wechange-eg/cosinnus-file.git
+[submodule "cosinnus-note"]
+	path = cosinnus-note
+	url = git@github.com:wechange-eg/cosinnus-note.git
+[submodule "cosinnus-notifications"]
+	path = cosinnus-notifications
+	url = git@github.com:wechange-eg/cosinnus-notifications.git
+[submodule "cosinnus-marketplace"]
+	path = cosinnus-marketplace
+	url = git@github.com:wechange-eg/cosinnus-marketplace.git
+[submodule "cosinnus-poll"]
+	path = cosinnus-poll
+	url = git@github.com:wechange-eg/cosinnus-poll.git
+[submodule "cosinnus-stream"]
+	path = cosinnus-stream
+	url = git@github.com:wechange-eg/cosinnus-stream.git
+[submodule "cosinnus-todo"]
+	path = cosinnus-todo
+	url = git@github.com:wechange-eg/cosinnus-todo.git
