@@ -36,10 +36,10 @@ services:
   mariadb:
     image: mariadb
     environment:
-      MYSQL_RANDOM_ROOT_PASSWORD: yes
-      MYSQL_DATABASE: etherpad
-      MYSQL_USER: etherpad
-      MYSQL_PASSWORD: etherpad
+      MYSQL_RANDOM_ROOT_PASSWORD: "yes"
+      MYSQL_DATABASE: "etherpad"
+      MYSQL_USER: "etherpad"
+      MYSQL_PASSWORD: "etherpad"
     volumes:
       - ./mariadb:/var/lib/mysql
  
