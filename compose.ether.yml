@@ -29,17 +29,17 @@ services:
     image: ptman/etherpad
     ports:
       - "8002:9001"
-    volumes:
-      - ./settings.json:/opt/etherpad/settings.json
+#    volumes:
+#      - ./settings.json:/opt/etherpad/settings.json
     depends_on:
       - mariadb
   mariadb:
     image: mariadb
     environment:
-      MYSQL_RANDOM_ROOT_PASSWORD: yes
-      MYSQL_DATABASE: etherpad
-      MYSQL_USER: etherpad
-      MYSQL_PASSWORD: etherpad
+      MYSQL_RANDOM_ROOT_PASSWORD: "yes"
+      MYSQL_DATABASE: "etherpad"
+      MYSQL_USER: "etherpad"
+      MYSQL_PASSWORD: "etherpad"
     volumes:
       - ./mariadb:/var/lib/mysql
  
