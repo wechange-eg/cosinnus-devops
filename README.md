@@ -132,3 +132,9 @@ WECHANGE supports sub-portals that share the same database and can display the c
 Run the new portal using `./manage.py --cosinnus-portal <portalname>`.
 
 For multiple subportals, duplicate the `wsgi_subportal.py` and `config_subportal.py`. 
+
+# Acknowledgements
+
+wechange uses the Browserstack Testing Suite for Browser Testing.
+
+<a href="https://www.browserstack.com" target="_blank"><img src="https://wechange.de/static/img/browserstack-logo.png" alt="BrowserStack" width=200/></a>
