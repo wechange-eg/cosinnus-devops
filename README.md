@@ -5,13 +5,13 @@ This is the base project for wechange. It is mainly a configurable shell for the
 
 Note: The wechange project is often refered to as "neww" in code and imports and the internal apps and python Objects are named "cosinnus" for historical reasons. 
 
-# Setup local development with Docker
+# Option A: Setup local development with Docker
 
     git submodule init
     git submodule update
     docker-compose up
 
-# Setup local development manually
+# Option B: Setup local development manually
 
 This will set up a local development envirenment, getting you ready to work on wechange and all its internal apps.
 
@@ -82,7 +82,18 @@ This will set up a local development envirenment, getting you ready to work on w
     * name: Local Site (or anything you wish)
 * restart the server using "ctrl+c" and `./manage.py runserver`
 
-### First-Time Wagtail Setup
+### Compile the JS client using webpack
+
+This will compile the `client.js` JS client, which is used for the Map/Tile View and the v2 User Dashboard and Navbar. After setting up your environment, you need to do this at least once.
+
+* install npm for your OS
+* in a shell, cd to your `cosinnus-core` source directory
+* run `npm install`
+* run `npm run dev`. You can leave this running to automatically recompile the client on any changes, or just quit the watcher process after compilation is complete.
+
+### First-Time Wagtail Setup (optional)
+
+This is an optional step for your your local environment. If you choose not to do this, your root URL will stay blank, but all other URLs will work fine.
 
 We use Wagtail as CMS, and it will show up automatically as a root URL dashboard. You can skip this step configuring it, but all you will see on your root URL will be a blank page. Navigate to a page like `http://localhost:8000/projects/` to see the wechange-page.
 
