@@ -15,8 +15,6 @@ Note: The wechange project is often refered to as "neww" in code and imports and
 
 This will set up a local development envirenment, getting you ready to work on wechange and all its internal apps.
 
-Note: Wechange still runs on Python 2.7.15 using Django 1.8, but we are in the process of upgrading to Python 3 and Django >= 2.0!
-
 
 ### Install PostgresSql 
 
@@ -26,8 +24,7 @@ Note: Wechange still runs on Python 2.7.15 using Django 1.8, but we are in the p
   
 ### Install Python, Pip and Virtualenv
  
-* Install python 2.7.15. Please refer to external guides if you are unsure how to do this for your system!
-  * It is important that the python version is 2.7.15 exactly!
+* Install python 3.6.6 or higher. Please refer to external guides if you are unsure how to do this for your system!
 * `pip install --upgrade pip` - Upgrade pip. Don't skip this step!
 * `pip install virtualenv` - Install virtualenv
 
