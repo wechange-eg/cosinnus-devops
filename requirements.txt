@@ -1,7 +1,7 @@
 # this file only contains requirements not contained in the cosinnus projects' setup.py files
 
 git+git://github.com/sinnwerkstatt/django-awesome-avatar.git@master#egg=django-awesome-avatar
-git+git://github.com/Markush2010/django-bootstrap3.git@46a84044e89937ebe6128b2a8c560f141741a70e#egg=django_bootstrap3
+#git+git://github.com/Markush2010/django-bootstrap3.git@46a84044e89937ebe6128b2a8c560f141741a70e#egg=django_bootstrap3
 git+git://github.com/saschan/django-djajax.git@master#egg=django-djajax
 git+git://github.com/sinnwerkstatt/django-multiform.git@master#egg=django-multiform
 git+git://github.com/sinnwerkstatt/django-osm-field.git@gh-pages#egg=django-osm-field
