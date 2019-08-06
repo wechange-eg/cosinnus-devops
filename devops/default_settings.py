@@ -20,9 +20,9 @@ STATICFILES_DIRS = (
     join(BASE_PATH, 'static'),
 )
 
-LOCALE_PATHS = LOCALE_PATHS + (
+LOCALE_PATHS = LOCALE_PATHS + [
     join(BASE_PATH, 'locale'),
-)
+]
 
 
 ROOT_URLCONF = 'devops.urls'
