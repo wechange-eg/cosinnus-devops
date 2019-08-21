@@ -159,7 +159,7 @@ If you are not planning to work with the map or “search” you can skip this s
             'INDEX_NAME': 'wechange',
         },
     }
-`
+```
 
 * Make sure elastic search is running, if not: run it.
 
