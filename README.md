@@ -13,14 +13,21 @@ Note: The wechange project is often refered to as "neww" in code and imports and
 
 # Option B: Setup local development manually
 
-This will set up a local development envirenment, getting you ready to work on wechange and all its internal apps.
+This will set up a local development environment, getting you ready to work on wechange and all its internal apps.
 
 
 ### Install PostgresSql 
+#### Note: this step is necessary!
 
 * Install PostgreSql for your system 
 * Create new psql database. Name it "wechange" or similar and note its password and user
-  * you can use the root psql user, but we advise you to use a different one
+  * You can use the root psql user, but we advise you to use a different one
+
+### Install the GDAL library
+
+* Install GDAL for your system (https://docs.djangoproject.com/en/2.1/ref/contrib/gis/install/geolibs/)
+* For macOS, use `brew install gdal`
+
   
 ### Install Python, Pip and Virtualenv
  
@@ -34,18 +41,22 @@ This will set up a local development envirenment, getting you ready to work on w
 
 ### Create a virtualenv and project folders
  
-* `virtualenv <your-path>/wechangeenv` - create your virtualenv once
-* `source <your-path>/wechangeenv/bin/activate` - activate your wechange virtualenv (do this in every new console when working on wechange)
-* `mkdir <your-project-folder>/wechange-source` - create the new wechange project location
+* `virtualenv <your-path>/wechangeenv` - Create your virtualenv once
+* `source <your-path>/wechangeenv/bin/activate` - Activate your wechange virtualenv (do this in every new console when working on wechange)
+* `mkdir <your-project-folder>/wechange-source` - Create the new wechange project location
 * `cd <your-project-folder>/wechange-source`
 
 ### Get the cosinnus-devops and cosinnus source code
 
 * `git clone git@github.com:wechange-eg/cosinnus-devops.git cosinnus-devops`
 * `./cosinnus-devops/local_install.sh | tee install.log`
+* `cd cosinnus-devops/devops` - Get into the devops folder and initiate subfolders
+* `git submodule init`
+* `git submodule update`
+  * Since cosinnus-devops is not updated regularly, the submodules are probably pointing to old commits. Make sure to check and pull the current master branch for each submodule. 
 
 ### Set up the local wechange source and install all dependencies
-
+*  Get back to the cosinnus-devops folder
 * `./cosinnus-devops/local_setup.sh | tee setup.log`
   * This sets up all of the cosinnus-projects into individual folders and runs "python setup.py develop". This means that the source of the cosinnus dependency is localized in the same directory, and you can edit the files in there as if it were a source directory.
 * `pip install -r ./cosinnus-devops/requirements_local.txt | tee reqs.log`
@@ -63,33 +74,34 @@ This will set up a local development envirenment, getting you ready to work on w
 * `cd cosinnus-devops`
 * `cp devops/settings_local.py devops/settings.py`
 * Edit `devops/settings.py`:
-  * replace the database settings in ``DATABASES['default']``: 
+  * Replace the database settings in ``DATABASES['default']``: 
     * NAME, USER, PASSWORD: based on how you created your psql database
   * (this settings.py file is in .gitignore)
 
 ### One-Time Django Setup 
   
-* `./manage.py migrate` - creates all the empty database tables
-* `./manage.py createsuperuser` - create your own user account
-  * enter the credentials for your local user
-  * the username doesn't matter, you will log in using the email as credential
+* `./manage.py migrate` - Creates all the empty database tables
+* `./manage.py createsuperuser` - Creates your own user account
+  * Enter the credentials for your local user
+  * The username doesn't matter, you will log in using the email as credential
 
 ### First-Time Wechange Setup
 
-* navigate to `http://localhost:8000/admin` and log in with the email address and password you just created
-  * navigate to `http://localhost:8000/admin/sites/site/1/` and change the default Site to 
+* `./manage.py runserver` - Runs the server
+* Navigate to `http://localhost:8000/admin` and log in with the email address and password you just created
+  * Navigate to `http://localhost:8000/admin/sites/site/1/` and change the default Site to 
     * domain: localhost:8000
     * name: Local Site (or anything you wish)
-* restart the server using "ctrl+c" and `./manage.py runserver`
+* Restart the server using "ctrl+c" and `./manage.py runserver`
 
 ### Compile the JS client using webpack
 
 This will compile the `client.js` JS client, which is used for the Map/Tile View and the v2 User Dashboard and Navbar. After setting up your environment, you need to do this at least once.
 
-* install npm for your OS
-* in a shell, cd to your `cosinnus-core` source directory
-* run `npm install`
-* run `npm run dev`. You can leave this running to automatically recompile the client on any changes, or just quit the watcher process after compilation is complete.
+* Install npm for your OS (https://nodejs.org/en/download/)
+* In a new terminal, cd to your `cosinnus-core` source directory
+* Run `npm install`
+* Run `npm run dev`. You can leave this running to automatically recompile the client on any changes, or just quit the watcher process after compilation is complete.
 
 ### First-Time Wagtail Setup (optional)
 
@@ -97,35 +109,66 @@ This is an optional step for your your local environment. If you choose not to d
 
 We use Wagtail as CMS, and it will show up automatically as a root URL dashboard. You can skip this step configuring it, but all you will see on your root URL will be a blank page. Navigate to a page like `http://localhost:8000/projects/` to see the wechange-page.
 
-* navigate to `http://localhost:8000/cms-admin/pages/`
+* Navigate to `http://localhost:8000/cms-admin/pages/`
   * Delete the page "Welcome to your new Wagtail Site"
-  * create new Subpage on the root level
+  * Create new Subpage on the root level
     * Tab Inhalt (de): Title: enter "Root"
     * Tab Förderung: Kurtitel (slug): enter "root"
     * Tab Einstellungen: Portal: choose "Default Portal"
-    * below in the drop-up: Click "Publish"
+    * Below in the drop-up: Click "Publish"
   * Hover over the new "Root" page and click "Add new Subpage"
     * Choose "Start-Page: Modular"
     * Tab Inhalt (de): Title: enter "Dashboard"
     * Tab Förderung: Kurtitel (slug): enter "dashboard"
-    * below in the drop-up: Click "Publish"
+    * Below in the drop-up: Click "Publish"
   * In the left side menu, go to Settings > Sites
-    * click "Add Site"
+    * Click "Add Site"
     * Hostname: localhost:8000
     * Port: 8000
-    * click Choose Origin Site:
+    * Click Choose Origin Site:
       * Navigate below Root using ">", choose page "Dashboard"
     * Check "Default Site" on
-    * click "Save"
-* navigate to `http://localhost:8000/`, you should see the blank CMS dashboard. 
+    * Click "Save"
+* Navigate to `http://localhost:8000/`, you should see the blank CMS dashboard. 
   * Its content can be edited in the "Dashboard" Page you just created in http://localhost:8000/cms-admin/pages/. 
+
+### Install Elasticsearch on your system
+
+If you are not planning to work with the map or “search” you can skip this step, otherwise it is required.
+
+* Install Elasticsearch (https://www.elastic.co/downloads/elasticsearch)
+  * For macOS: 
+   * `brew tap elastic/tap`
+   * `brew install elastic/tap/elasticsearch-full`
+* Switch between haystack settings in the settings.py file by changing the comment section:
+
+```
+    """
+    HAYSTACK_CONNECTIONS = {
+        'default': {
+            'ENGINE': 'haystack.backends.simple_backend.SimpleEngine',
+        },
+    }
+    """
+    # enable this haystack setting if you have actually set up elastic search on your system
+
+    HAYSTACK_CONNECTIONS = {
+        'default': {
+            'ENGINE': 'cosinnus.backends.RobustElasticSearchEngine',  # replaces 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
+            'URL': 'http://127.0.0.1:9200/',
+            'INDEX_NAME': 'wechange',
+        },
+    }
+```
+
+* Make sure elastic search is running, if not: run it.
 
 ### Check if you're up-and-running and create the Forum Group
 
-* navigate to `http://localhost:8000/groups/`
-* click "Create Group" in the left sidebar
-  * enter Group Name: "Forum" (must be exact!)
-  * click "Save" below
+* Navigate to `http://localhost:8000/groups/`
+* Click "Create Group" in the left sidebar
+  * Enter Group Name: "Forum" (must be exact!)
+  * Click "Save" below
 * If you get redirected to the Forum's Group Dashboard and "Forum" appears in the top navigation bar, you're all set!
 
 
