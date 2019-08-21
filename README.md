@@ -142,7 +142,7 @@ If you are not planning to work with the map or “search” you can skip this s
    * `brew install elastic/tap/elasticsearch-full`
 * Switch between haystack settings in the settings.py file by changing the comment section:
 
-`
+```
     """
     HAYSTACK_CONNECTIONS = {
         'default': {
