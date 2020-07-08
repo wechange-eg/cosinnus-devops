@@ -171,6 +171,21 @@ If you are not planning to work with the map or “search” you can skip this s
   * Click "Save" below
 * If you get redirected to the Forum's Group Dashboard and "Forum" appears in the top navigation bar, you're all set!
 
+## Using MariaDB instead of Postgres
+
+To use MariaDB instead of Postgres locally, you will need to modify the following migrations files
+
+* cosinnus-core/cosinnus/migrations/0048_auto_20190529_1505.py
+* cosinnus-event/cosinnus_event/migrations/0010_auto_20190714_1755.py
+
+In both, replace 
+
+`django.contrib.postgres.fields.jsonb.JSONField`
+
+with 
+
+`django_mysql.models.JSONField`
+
 
 # Git Structure
 
