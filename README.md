@@ -59,6 +59,8 @@ This will set up a local development environment, getting you ready to work on w
 *  Get back to the cosinnus-devops folder
 * `./cosinnus-devops/local_setup.sh | tee setup.log`
   * This sets up all of the cosinnus-projects into individual folders and runs "python setup.py develop". This means that the source of the cosinnus dependency is localized in the same directory, and you can edit the files in there as if it were a source directory.
+  * Check the `setup.log` log output and make sure that each individual call resulted in a successfull install, and did not stop with an error. If there are any errors in any of the calls, you need to resolve them and run `local_setup.sh` again untill all of them complete successfully!
+  * If any errors because of dependency conflicts happen, some older dependencies may have problems, that we haven't ironed out recently. In this case, the easiest way to go is to temporarily comment out *all* the entries in the `install_requires=[...]` array in the `setup.py` file of the offending cosinnus subdirectory to complete the script. This is okay since all requirements will be properly installed through the requirements file in the next step.
 * `pip install -r ./cosinnus-devops/requirements_local.txt | tee reqs.log`
   
 **Notes:** 
