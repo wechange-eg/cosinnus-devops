@@ -1,5 +1,6 @@
 # Cosinnus
 -e git+git://github.com/wechange-eg/cosinnus-core.git@staging#egg=cosinnus
+-e git+git://github.com/wechange-eg/cosinnus-cloud.git@staging#egg=cosinnus-cloud
 -e git+git://github.com/wechange-eg/cosinnus-etherpad.git@staging#egg=cosinnus-etherpad
 -e git+git://github.com/wechange-eg/cosinnus-event.git@staging#egg=cosinnus-event
 -e git+git://github.com/wechange-eg/cosinnus-message.git@staging#egg=cosinnus-message
