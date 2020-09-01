@@ -60,8 +60,8 @@ except:
   fi
 else
   # Get repo ID
-  echo -n -e "\rGet repo ID... "
-  project_id=`curl --request GET --silent --header "PRIVATE-TOKEN: ${ACCESS_TOKEN}" --header "Content-Type: application/json" \
+  echo -n -e "\rSearch repo ID... "
+  default_project_id=`curl --request GET --silent --header "PRIVATE-TOKEN: ${ACCESS_TOKEN}" --header "Content-Type: application/json" \
   --data "{\"search\": \"${repo}\"}" "${API_URL}/projects?search=${repo}" | python3 -c "
 import sys, json
 try:
@@ -69,13 +69,16 @@ try:
 except:
     print(0)
 "`
-  if [[ $project_id -eq 0 ]]
+  if [[ default_project_id -eq 0 ]]
   then
     echo -e "failed (name not found)"
     exit
   else
     echo -e "done"
   fi
+
+  read -p "GitLab project ID [$default_project_id]: " project_id
+  project_id=${project_id:-$default_project_id}
 fi
 
 # Get deploy key
