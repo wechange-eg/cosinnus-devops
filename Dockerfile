@@ -1,6 +1,6 @@
 FROM python:3.6.7
 ENV PYTHONUNBUFFERED 1
-RUN apt-get update && apt-get install -y libgeos-dev
+RUN apt-get update && apt-get install -y libgeos-dev binutils libproj-dev gdal-bin
 
 RUN curl -sL https://deb.nodesource.com/setup_8.x | bash -
 RUN apt-get install -y nodejs && \
