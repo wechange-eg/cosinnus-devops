@@ -33,4 +33,4 @@
 	url = https://github.com/wechange-eg/cosinnus-todo.git
 [submodule "cosinnus-cloud"]
 	path = cosinnus-cloud
-	url = git@github.com:wechange-eg/cosinnus-cloud.git
+	url = https://github.com/wechange-eg/cosinnus-cloud.git

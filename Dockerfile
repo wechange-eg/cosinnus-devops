@@ -12,7 +12,11 @@ WORKDIR /code
 ADD . /code/
 COPY ./docker-entrypoint.sh /
 COPY devops/settings_docker.py /code/devops/settings.py
-RUN pip install -r /code/requirements_docker.txt
+RUN pip install --ignore-installed --disable-pip-version-check pip setuptools wheel \
+        && \
+    hash pip \
+        && \
+    pip install -r /code/requirements_docker.txt
 
 RUN /code/local_setup.sh
 WORKDIR /code/cosinnus-core

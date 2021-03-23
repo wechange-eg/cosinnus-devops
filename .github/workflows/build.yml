@@ -1,0 +1,37 @@
+# Copyright (C) 2021 Sebastian Pipping <sebastian@pipping.org>
+# Licensed under GNU Affero GPL v3 or later
+
+name: Build with docker-compose
+
+on:
+  pull_request:
+  push:
+  schedule:
+    - cron: '0 4 * * *'  # Every day at 4am
+
+jobs:
+  build_and_test:
+    name: Build with docker-compose
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2.3.4
+        with:
+          submodules: True
+
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v2.2.1
+        with:
+          python-version: 3.9
+
+      - name: Install build dependencies
+        run: |-
+          pip install \
+            --disable-pip-version-check \
+            --user \
+            --no-warn-script-location \
+            docker-compose
+          echo "PATH=${HOME}/.local/bin:${PATH}" >> "${GITHUB_ENV}"
+
+      - name: Build Docker image
+        run: |-
+          docker-compose build
