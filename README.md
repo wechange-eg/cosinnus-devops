@@ -104,7 +104,41 @@ This will compile the `client.js` JS client, which is used for the Map/Tile View
 * Run `npm install`
 * Run `npm run dev`. You can leave this running to automatically recompile the client on any changes, or just quit the watcher process after compilation is complete.
 
-### First-Time Wagtail Setup (optional)
+
+### Install Elasticsearch on your system
+
+If you are not planning to work with the map or “search” you can skip this step, otherwise it is required.
+
+* Install and run Elasticsearch 1.3.9 (https://www.elastic.co/downloads/elasticsearch)
+  * Using docker:
+     * From `cosinnus-devops/elasticsearch-1.3.9-docker/` run `docker-compose up -d`
+  * (Alternative) For macOS without docker: 
+    * `brew tap elastic/tap`
+    * `brew install elastic/tap/elasticsearch-full`
+* Switch between haystack settings in the settings.py file by changing the comment section:
+
+```
+    """
+    HAYSTACK_CONNECTIONS = {
+        'default': {
+            'ENGINE': 'haystack.backends.simple_backend.SimpleEngine',
+        },
+    }
+    """
+    # enable this haystack setting if you have actually set up elastic search on your system
+
+    HAYSTACK_CONNECTIONS = {
+        'default': {
+            'ENGINE': 'cosinnus.backends.RobustElasticSearchEngine',  # replaces 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
+            'URL': 'http://127.0.0.1:9200/',
+            'INDEX_NAME': 'wechange',
+        },
+    }
+```
+
+* Make sure elastic search is running, if not: run it.
+
+### First-Time Wagtail Setup (no longer recommended)
 
 This is an optional step for your your local environment. If you choose not to do this, your root URL will stay blank, but all other URLs will work fine.
 
@@ -133,36 +167,6 @@ We use Wagtail as CMS, and it will show up automatically as a root URL dashboard
 * Navigate to `http://localhost:8000/`, you should see the blank CMS dashboard. 
   * Its content can be edited in the "Dashboard" Page you just created in http://localhost:8000/cms-admin/pages/. 
 
-### Install Elasticsearch on your system
-
-If you are not planning to work with the map or “search” you can skip this step, otherwise it is required.
-
-* Install Elasticsearch (https://www.elastic.co/downloads/elasticsearch)
-  * For macOS: 
-   * `brew tap elastic/tap`
-   * `brew install elastic/tap/elasticsearch-full`
-* Switch between haystack settings in the settings.py file by changing the comment section:
-
-```
-    """
-    HAYSTACK_CONNECTIONS = {
-        'default': {
-            'ENGINE': 'haystack.backends.simple_backend.SimpleEngine',
-        },
-    }
-    """
-    # enable this haystack setting if you have actually set up elastic search on your system
-
-    HAYSTACK_CONNECTIONS = {
-        'default': {
-            'ENGINE': 'cosinnus.backends.RobustElasticSearchEngine',  # replaces 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
-            'URL': 'http://127.0.0.1:9200/',
-            'INDEX_NAME': 'wechange',
-        },
-    }
-```
-
-* Make sure elastic search is running, if not: run it.
 
 ### Check if you're up-and-running and create the Forum Group
 
@@ -172,7 +176,7 @@ If you are not planning to work with the map or “search” you can skip this s
   * Click "Save" below
 * If you get redirected to the Forum's Group Dashboard and "Forum" appears in the top navigation bar, you're all set!
 
-## Using MariaDB instead of Postgres
+## (Alternative) Using MariaDB instead of Postgres
 
 To use MariaDB instead of Postgres locally, you will need to modify the following migrations files
 
