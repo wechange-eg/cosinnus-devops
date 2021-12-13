@@ -1,36 +1,48 @@
 [submodule "cosinnus-core"]
 	path = cosinnus-core
 	url = https://github.com/wechange-eg/cosinnus-core.git
+	branch = main
 [submodule "cosinnus-etherpad"]
 	path = cosinnus-etherpad
 	url = https://github.com/wechange-eg/cosinnus-etherpad.git
+	branch = main
 [submodule "cosinnus-event"]
 	path = cosinnus-event
 	url = https://github.com/wechange-eg/cosinnus-event.git
+	branch = main
 [submodule "cosinnus-message"]
 	path = cosinnus-message
 	url = https://github.com/wechange-eg/cosinnus-message.git
+	branch = main
 [submodule "cosinnus-file"]
 	path = cosinnus-file
 	url = https://github.com/wechange-eg/cosinnus-file.git
+	branch = main
 [submodule "cosinnus-note"]
 	path = cosinnus-note
 	url = https://github.com/wechange-eg/cosinnus-note.git
+	branch = main
 [submodule "cosinnus-notifications"]
 	path = cosinnus-notifications
 	url = https://github.com/wechange-eg/cosinnus-notifications.git
+	branch = main
 [submodule "cosinnus-marketplace"]
 	path = cosinnus-marketplace
 	url = https://github.com/wechange-eg/cosinnus-marketplace.git
+	branch = main
 [submodule "cosinnus-poll"]
 	path = cosinnus-poll
 	url = https://github.com/wechange-eg/cosinnus-poll.git
+	branch = main
 [submodule "cosinnus-stream"]
 	path = cosinnus-stream
 	url = https://github.com/wechange-eg/cosinnus-stream.git
+	branch = main
 [submodule "cosinnus-todo"]
 	path = cosinnus-todo
 	url = https://github.com/wechange-eg/cosinnus-todo.git
+	branch = main
 [submodule "cosinnus-cloud"]
 	path = cosinnus-cloud
 	url = https://github.com/wechange-eg/cosinnus-cloud.git
+	branch = main
