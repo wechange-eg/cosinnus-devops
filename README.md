@@ -1,148 +1,37 @@
-wechange
-=========================
+# wechange Stack
 
-This is the base project for wechange. It is mainly a configurable shell for the actual wechange apps, which are pluggable components. Most of the actual code resides in "cosinnus-core". See `requirements_staging.txt` for a full list of internal apps.
+## Intro
 
-Note: The wechange project is often refered to as "neww" in code and imports and the internal apps and python Objects are named "cosinnus" for historical reasons. 
+This repo serves as a starting point for initiating a wechange portal. wechange is composed of a frontend, a backend and multiple microservices from third-party providers. Contained within this repository is the necessary configuration for executing all the components on a local machine for development purposes. *This setup is not intended for production use.*
 
-# Option A: Setup local development with Docker
+## Setup
 
-    git submodule init
-    git submodule update
-    docker-compose up
+### 1. Install dependencies
+ * [Docker](https://docs.docker.com/engine/install/)
+ * [Docker Compose](https://docs.docker.com/compose/install/)
+ * [Tilt](https://docs.tilt.dev/install.html)
 
-# Option B: Setup local development manually
+### 2. Clone this repo
+`git clone git@github.com:wechange-eg/cosinnus-devops.git`
 
-This will set up a local development envirenment, getting you ready to work on wechange and all its internal apps.
+### 3. Clone wechange frontend and backend
+```
+cd cosinnus-devops/apps
+git clone git@git.wechange.de:code/portals/wechange-frontend.git
+git clone git@git.wechange.de:code/portals/wechange.git wechange-backend
+cd ..
+```
 
+### 4. Build and run services
+```
+tilt up
+```
 
-### Install PostgresSql 
+### 5. Access platform
 
-* Install PostgreSql for your system 
-* Create new psql database. Name it "wechange" or similar and note its password and user
-  * you can use the root psql user, but we advise you to use a different one
-  
-### Install Python, Pip and Virtualenv
- 
-* Install python 3.6.6 or higher. Please refer to external guides if you are unsure how to do this for your system!
-* `pip install --upgrade pip` - Upgrade pip. Don't skip this step!
-* `pip install virtualenv` - Install virtualenv
-
-### Install Git
-
-* Install a git client. Please refer to external guides if you are unsure how to do this for your system!
-
-### Create a virtualenv and project folders
- 
-* `virtualenv <your-path>/wechangeenv` - create your virtualenv once
-* `source <your-path>/wechangeenv/bin/activate` - activate your wechange virtualenv (do this in every new console when working on wechange)
-* `mkdir <your-project-folder>/wechange-source` - create the new wechange project location
-* `cd <your-project-folder>/wechange-source`
-
-### Get the cosinnus-devops and cosinnus source code
-
-* `git clone git@github.com:wechange-eg/cosinnus-devops.git cosinnus-devops`
-* `./cosinnus-devops/local_install.sh | tee install.log`
-
-### Set up the local wechange source and install all dependencies
-
-* `./cosinnus-devops/local_setup.sh | tee setup.log`
-  * This sets up all of the cosinnus-projects into individual folders and runs "python setup.py develop". This means that the source of the cosinnus dependency is localized in the same directory, and you can edit the files in there as if it were a source directory.
-* `pip install -r ./cosinnus-devops/requirements_local.txt | tee reqs.log`
-  
-**Notes:** 
-
-* For wechange, we install the full set of dependencies via requirements.txt files. These are also used during our deployment and there are different files for local, staging and production environments.
-* We tee the stdout so you can see errors more clearly.
-* Deal with any errors you encounter here! Only move to the next step if you do not get any errors. Warnings are usually ok.
-  * Especially Pillow and some other dependencies are known to cause trouble on some systems! 
-  * if you see any compile errors, often time the solution is to install the offending dependency using a pip Wheel for your system.
-
-### Configure up your local wechange projects
-
-* `cd cosinnus-devops`
-* `cp devops/settings_local.py devops/settings.py`
-* Edit `devops/settings.py`:
-  * replace the database settings in ``DATABASES['default']``: 
-    * NAME, USER, PASSWORD: based on how you created your psql database
-  * (this settings.py file is in .gitignore)
-
-### One-Time Django Setup 
-  
-* `./manage.py migrate` - creates all the empty database tables
-* `./manage.py createsuperuser` - create your own user account
-  * enter the credentials for your local user
-  * the username doesn't matter, you will log in using the email as credential
-
-### First-Time Wechange Setup
-
-* navigate to `http://localhost:8000/admin` and log in with the email address and password you just created
-  * navigate to `http://localhost:8000/admin/sites/site/1/` and change the default Site to 
-    * domain: localhost:8000
-    * name: Local Site (or anything you wish)
-* restart the server using "ctrl+c" and `./manage.py runserver`
-
-### Compile the JS client using webpack
-
-This will compile the `client.js` JS client, which is used for the Map/Tile View and the v2 User Dashboard and Navbar. After setting up your environment, you need to do this at least once.
-
-* install npm for your OS
-* in a shell, cd to your `cosinnus-core` source directory
-* run `npm install`
-* run `npm run dev`. You can leave this running to automatically recompile the client on any changes, or just quit the watcher process after compilation is complete.
-
-### First-Time Wagtail Setup (optional)
-
-This is an optional step for your your local environment. If you choose not to do this, your root URL will stay blank, but all other URLs will work fine.
-
-We use Wagtail as CMS, and it will show up automatically as a root URL dashboard. You can skip this step configuring it, but all you will see on your root URL will be a blank page. Navigate to a page like `http://localhost:8000/projects/` to see the wechange-page.
-
-* navigate to `http://localhost:8000/cms-admin/pages/`
-  * Delete the page "Welcome to your new Wagtail Site"
-  * create new Subpage on the root level
-    * Tab Inhalt (de): Title: enter "Root"
-    * Tab Förderung: Kurtitel (slug): enter "root"
-    * Tab Einstellungen: Portal: choose "Default Portal"
-    * below in the drop-up: Click "Publish"
-  * Hover over the new "Root" page and click "Add new Subpage"
-    * Choose "Start-Page: Modular"
-    * Tab Inhalt (de): Title: enter "Dashboard"
-    * Tab Förderung: Kurtitel (slug): enter "dashboard"
-    * below in the drop-up: Click "Publish"
-  * In the left side menu, go to Settings > Sites
-    * click "Add Site"
-    * Hostname: localhost:8000
-    * Port: 8000
-    * click Choose Origin Site:
-      * Navigate below Root using ">", choose page "Dashboard"
-    * Check "Default Site" on
-    * click "Save"
-* navigate to `http://localhost:8000/`, you should see the blank CMS dashboard. 
-  * Its content can be edited in the "Dashboard" Page you just created in http://localhost:8000/cms-admin/pages/. 
-
-### Check if you're up-and-running and create the Forum Group
-
-* navigate to `http://localhost:8000/groups/`
-* click "Create Group" in the left sidebar
-  * enter Group Name: "Forum" (must be exact!)
-  * click "Save" below
-* If you get redirected to the Forum's Group Dashboard and "Forum" appears in the top navigation bar, you're all set!
-
-
-# Git Structure
-
-Cosinnus-devops pulls Cosinnus-core and all cosinnus apps in directly from their Git repositories. See `requirements_staging.txt` for the repo locations and used branches.
-
-# Testing Subportals
-
-WECHANGE supports sub-portals that share the same database and can display the contents of other portals in the same "pool" in searches and map views. For this, create a new CosinnusPortal in the django admin, enter its portal name, site-id and settings in config_subportal.py.
-
-Run the new portal using `./manage.py --cosinnus-portal <portalname>`.
-
-For multiple subportals, duplicate the `wsgi_subportal.py` and `config_subportal.py`. 
-
-# Acknowledgements
-
-wechange uses the Browserstack Testing Suite for Browser Testing.
-
-<a href="https://www.browserstack.com" target="_blank"><img src="https://wechange.de/static/img/browserstack-logo.png" alt="BrowserStack" width=200/></a>
+* Main platform (wechange): e. g. http://wechange.localhost/dashboard
+* CMS service (wordpress) http://wechange.localhost/ (and http://wechange.localhost/cms/)
+* Messaging service (rocketchat): http://chat.wechange.localhost/
+* Cloud storage service (nextcloud & collabora): http://cloud.wechange.localhost/
+* Document collaboration service (etherpad): http://pad.wechange.localhost/
+* Spreadsheet collaboration service (ethercalc): http://calc.wechange.localhost/

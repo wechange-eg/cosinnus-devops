@@ -1,0 +1,4 @@
+# -*- mode: Python -*-
+
+dc_resource(name="traefik", labels=["traefik"])
+dc_resource(name="traefik-docker-socket-proxy", labels=["traefik"])

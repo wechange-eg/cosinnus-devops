@@ -1,0 +1,45 @@
+version: "3.8"
+
+services:
+  traefik-docker-socket-proxy:
+    image: tecnativa/docker-socket-proxy
+    privileged: true
+    restart: unless-stopped
+    container_name: "traefik-docker-socket-proxy"
+    environment:
+      CONTAINERS: 1
+    networks:
+      - wechange-traefik
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+
+  traefik:
+    depends_on:
+      - traefik-docker-socket-proxy
+    image: traefik:2.8
+    container_name: "traefik"
+    command:
+      - --api
+      - --api.dashboard=true
+      - --api.insecure=true
+      - --global.sendanonymoususage=false
+      - --log.level=warning
+      - --providers.docker
+      - --providers.docker.endpoint=tcp://traefik-docker-socket-proxy:2375
+      - --providers.docker.exposedByDefault=false
+      - --providers.docker.network=wechange-traefik
+    networks:
+      - default
+      - wechange-traefik
+    ports:
+      - 80:80
+    restart: always
+    labels:
+      traefik.enable: true
+      traefik.http.routers.traefik-router.rule: Host(`traefik.localhost`)
+      traefik.http.routers.traefik-router.service: traefik-service
+      traefik.http.services.traefik-service.loadbalancer.server.port: 8080
+
+networks:
+  wechange-traefik:
+    external: true

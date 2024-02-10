@@ -1,0 +1,20 @@
+version: "3"
+
+services:
+  etherpad:
+    image: etherpad/etherpad
+    ports:
+      - 3004:9001
+    #    volumes:
+    #      - ./settings.json:/opt/etherpad/settings.json
+    depends_on:
+      - etherpad-db
+
+  etherpad-postgres:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: "etherpad"
+      POSTGRES_PASSWORD: "etherpad"
+    ports:
+      - 3005:5432
+    expose: ["5432"]

@@ -1,0 +1,48 @@
+version: "3"
+
+volumes:
+  mariadb-wordpress-data:
+  wordpress-data:
+
+services:
+  wordpress:
+    image: wordpress:latest
+    restart: always
+    volumes:
+      - wordpress-data:/var/www/html
+    env_file:
+      - ../settings/wordpress.env
+    labels:
+      traefik.enable: true
+      traefik.http.routers.wordpress-router.rule: Host(`wechange.localhost`) && PathPrefix(`/`)
+      traefik.http.routers.wordpress-router.service: wordpress
+      traefik.http.middlewares.wordpress-stripprefix.stripprefix.prefixes: /cms
+      traefik.http.routers.wordpress-cms-router.middlewares: wordpress-stripprefix@docker
+      traefik.http.routers.wordpress-cms-router.rule: Host(`wechange.localhost`) && PathPrefix(`/cms`)
+      traefik.http.routers.wordpress-cms-router.service: wordpress
+      traefik.http.services.wordpress.loadbalancer.server.port: 80
+
+  wordpress-migrations:
+    image: wordpress:cli
+    entrypoint: sh
+    user: xfs
+    volumes:
+      - wordpress-data:/var/www/html
+    env_file:
+      - ../settings/wordpress.env
+    command: -c 'sleep 10; wp core install --url="http://wechange.localhost" --title="wechange DEV" --admin_name=admin --admin_password="admin" --admin_email=admin@wechange.localhost'
+    depends_on:
+      - wordpress
+      - mariadb-wordpress
+
+  mariadb-wordpress:
+    image: mariadb:latest
+    command: "--default-authentication-plugin=mysql_native_password"
+    volumes:
+      - mariadb-wordpress-data:/var/lib/mysql
+    restart: always
+    env_file:
+      - ../settings/wordpress.mariadb.env
+    ports:
+      - 3306:3306
+      - 33060:33060

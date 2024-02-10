@@ -1,0 +1,41 @@
+# -*- mode: Python -*-
+docker_cache_days = 30
+docker_cache_minutes = docker_cache_days*24*60
+docker_prune_settings(
+    disable=False,
+    max_age_mins=docker_cache_minutes,
+    num_builds=0,
+    interval_hrs=1,
+    keep_recent=2,
+)
+update_settings(max_parallel_updates=6)
+
+local(
+    'bash -c "{command}"'.format(
+        command=" ".join([
+            "[[ -z '$(docker network ls | grep wechange-traefik)' ]]",
+            "&& docker network create wechange-traefik",
+            "|| echo 'wechange-traefik already created'",
+        ])
+    )
+)
+
+docker_compose([
+    "./wechange/traefik.yaml",
+    # include("./wechange/wechange-frontend.yaml")
+    # include("./wechange/wechange-backend.yaml")
+    # include("./wechange/rocket-chat.yaml")
+    # include("./wechange/nextcloud.yaml")
+    # include("./wechange/etherpad.yaml")
+    # include("./wechange/ethercalc.yaml")
+    './wechange/wordpress.yaml',
+])
+
+include("./tilts/Tiltfile.traefik")
+# include("./tilts/Tiltfile.wechange-frontend")
+# include("./tilts/Tiltfile.wechange-backend")
+# include("./tilts/Tiltfile.rocket-chat")
+# include("./tilts/Tiltfile.nextcloud")
+# include("./tilts/Tiltfile.etherpad")
+# include("./tilts/Tiltfile.ethercalc")
+include("./tilts/Tiltfile.wordpress")

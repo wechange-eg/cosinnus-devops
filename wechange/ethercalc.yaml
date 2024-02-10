@@ -1,0 +1,16 @@
+version: "3"
+
+services:
+  ethercalc:
+    image: audreyt/ethercalc:latest
+    container_name: "ethercalc"
+    ports:
+      - 3006:80
+    expose: ["80"]
+    depends_on:
+      - redis
+
+  ethercalc-redis:
+    image: redis
+    volumes: ["./redis:/data"]
+    command: redis-server --appendonly yes
