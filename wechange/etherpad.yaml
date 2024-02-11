@@ -1,20 +1,32 @@
 version: "3"
 
+volumes:
+  etherpad-postgres-data:
+  etherpad-data:
+
 services:
   etherpad:
     image: etherpad/etherpad
-    ports:
-      - 3004:9001
-    #    volumes:
-    #      - ./settings.json:/opt/etherpad/settings.json
+    container_name: etherpad
     depends_on:
-      - etherpad-db
+      - etherpad-postgres
+    env_file:
+      - ../settings/etherpad.env
+    volumes:
+      - etherpad-data:/opt/etherpad-lite/var
+    labels:
+      traefik.enable: true
+      traefik.http.routers.etherpad-router.rule: Host(`pad.wechange.localhost`)
+      traefik.http.routers.etherpad-router.service: etherpad
+      traefik.http.services.etherpad.loadbalancer.server.port: 9001
 
   etherpad-postgres:
     image: postgres:latest
-    environment:
-      POSTGRES_USER: "etherpad"
-      POSTGRES_PASSWORD: "etherpad"
-    ports:
-      - 3005:5432
-    expose: ["5432"]
+    container_name: etherpad-postgres
+    restart: always
+    logging:
+      driver: "none" # disable saving logs
+    env_file:
+      - ../settings/etherpad.postgres.env
+    volumes:
+      - etherpad-postgres-data:/var/lib/postgresql/data:cached

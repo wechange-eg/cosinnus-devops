@@ -1,0 +1,4 @@
+# -*- mode: Python -*-
+
+dc_resource(name="etherpad", labels=["3rd-party"])
+dc_resource(name="etherpad-postgres", labels=["db"])

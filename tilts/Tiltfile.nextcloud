@@ -1,0 +1,6 @@
+# -*- mode: Python -*-
+
+dc_resource(name="nextcloud", labels=["3rd-party"])
+dc_resource(name="nextcloud-postgres", labels=["db"])
+dc_resource(name="nextcloud-redis", labels=["db"])
+dc_resource(name="nextcloud-cron", labels=["migrations"])

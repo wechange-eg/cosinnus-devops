@@ -1,0 +1,4 @@
+# -*- mode: Python -*-
+
+dc_resource(name="rocketchat", labels=["3rd-party"])
+dc_resource(name="rocketchat-mongodb", labels=["db"])

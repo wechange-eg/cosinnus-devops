@@ -22,20 +22,20 @@ local(
 
 docker_compose([
     "./wechange/traefik.yaml",
-    # include("./wechange/wechange-frontend.yaml")
-    # include("./wechange/wechange-backend.yaml")
-    # include("./wechange/rocket-chat.yaml")
-    # include("./wechange/nextcloud.yaml")
-    # include("./wechange/etherpad.yaml")
-    # include("./wechange/ethercalc.yaml")
-    './wechange/wordpress.yaml',
+    # "./wechange/wechange-frontend.yaml",
+    # "./wechange/wechange-backend.yaml",
+    "./wechange/rocketchat.yaml",
+    "./wechange/nextcloud.yaml",
+    "./wechange/etherpad.yaml",
+    "./wechange/ethercalc.yaml",
+    "./wechange/wordpress.yaml",
 ])
 
 include("./tilts/Tiltfile.traefik")
 # include("./tilts/Tiltfile.wechange-frontend")
 # include("./tilts/Tiltfile.wechange-backend")
-# include("./tilts/Tiltfile.rocket-chat")
-# include("./tilts/Tiltfile.nextcloud")
-# include("./tilts/Tiltfile.etherpad")
-# include("./tilts/Tiltfile.ethercalc")
+include("./tilts/Tiltfile.rocketchat")
+include("./tilts/Tiltfile.nextcloud")
+include("./tilts/Tiltfile.etherpad")
+include("./tilts/Tiltfile.ethercalc")
 include("./tilts/Tiltfile.wordpress")

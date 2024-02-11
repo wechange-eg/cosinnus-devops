@@ -3,9 +3,9 @@ version: "3.8"
 services:
   traefik-docker-socket-proxy:
     image: tecnativa/docker-socket-proxy
+    container_name: traefik-docker-socket-proxy
     privileged: true
     restart: unless-stopped
-    container_name: "traefik-docker-socket-proxy"
     environment:
       CONTAINERS: 1
     networks:
@@ -17,7 +17,7 @@ services:
     depends_on:
       - traefik-docker-socket-proxy
     image: traefik:2.8
-    container_name: "traefik"
+    container_name: traefik
     command:
       - --api
       - --api.dashboard=true

@@ -1,5 +1,5 @@
 # -*- mode: Python -*-
 
 dc_resource(name="wordpress", labels=["3rd-party"])
-dc_resource(name="mariadb-wordpress", labels=["db"])
+dc_resource(name="wordpress-mariadb", labels=["db"])
 dc_resource(name="wordpress-migrations", labels=["migrations"])

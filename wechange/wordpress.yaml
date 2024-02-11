@@ -1,12 +1,13 @@
 version: "3"
 
 volumes:
-  mariadb-wordpress-data:
+  wordpress-mariadb-data:
   wordpress-data:
 
 services:
   wordpress:
     image: wordpress:latest
+    container_name: wordpress
     restart: always
     volumes:
       - wordpress-data:/var/www/html
@@ -24,6 +25,7 @@ services:
 
   wordpress-migrations:
     image: wordpress:cli
+    container_name: wordpress-migrations
     entrypoint: sh
     user: xfs
     volumes:
@@ -33,13 +35,14 @@ services:
     command: -c 'sleep 10; wp core install --url="http://wechange.localhost" --title="wechange DEV" --admin_name=admin --admin_password="admin" --admin_email=admin@wechange.localhost'
     depends_on:
       - wordpress
-      - mariadb-wordpress
+      - wordpress-mariadb
 
-  mariadb-wordpress:
+  wordpress-mariadb:
     image: mariadb:latest
+    container_name: wordpress-mariadb
     command: "--default-authentication-plugin=mysql_native_password"
     volumes:
-      - mariadb-wordpress-data:/var/lib/mysql
+      - wordpress-mariadb-data:/var/lib/mysql
     restart: always
     env_file:
       - ../settings/wordpress.mariadb.env

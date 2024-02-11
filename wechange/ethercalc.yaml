@@ -1,16 +1,27 @@
 version: "3"
 
+volumes:
+  ethercalc-redis-data:
+
 services:
   ethercalc:
     image: audreyt/ethercalc:latest
-    container_name: "ethercalc"
-    ports:
-      - 3006:80
-    expose: ["80"]
+    container_name: ethercalc
     depends_on:
-      - redis
+      - ethercalc-redis
+    env_file:
+      - ../settings/ethercalc.env
+    labels:
+      traefik.enable: true
+      traefik.http.routers.ethercalc-router.rule: Host(`calc.wechange.localhost`)
+      traefik.http.routers.ethercalc-router.service: ethercalc
+      traefik.http.services.ethercalc.loadbalancer.server.port: 8000
 
   ethercalc-redis:
-    image: redis
-    volumes: ["./redis:/data"]
-    command: redis-server --appendonly yes
+    image: redis:latest
+    container_name: ethercalc-redis
+    restart: always
+    logging:
+      driver: "none" # disable saving logs
+    volumes:
+      - ethercalc-redis-data:/data:cached

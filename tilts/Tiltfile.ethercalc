@@ -1,0 +1,4 @@
+# -*- mode: Python -*-
+
+dc_resource(name="ethercalc", labels=["3rd-party"])
+dc_resource(name="ethercalc-redis", labels=["db"])

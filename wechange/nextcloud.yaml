@@ -1,22 +1,50 @@
 version: "3"
 
+volumes:
+  nextcloud-data:
+  nextcloud-postgres-data:
+
 services:
   nextcloud:
     image: nextcloud
+    container_name: nextcloud
+    restart: always
     ports:
-      - 3006:80
-    volumes:
-      - ./nextcloud:/var/www/html
+      - 8080:80
     depends_on:
-      - nextcloud-db
+      - nextcloud-postgres
+      - nextcloud-redis
+    volumes:
+      - nextcloud-data:/var/www/html
+    env_file:
+      - ../settings/nextcloud.postgres.env
+    labels:
+      traefik.enable: true
+      traefik.http.routers.nextcloud-router.rule: Host(`cloud.wechange.localhost`)
+      traefik.http.routers.nextcloud-router.service: nextcloud
+      traefik.http.services.nextcloud.loadbalancer.server.port: 80
 
-  nextcloud-db:
-    image: mariadb
-    environment:
-      MYSQL_ROOT_PASSWORD: "nextcloud"
-      MYSQL_DATABASE: "nextcloud"
-      MYSQL_USER: "nextcloud"
-      MYSQL_PASSWORD: "nextcloud"
-    ports:
-      - 3007:3306
-    expose: ["3306"]
+  nextcloud-cron:
+    image: nextcloud
+    container_name: nextcloud-cron
+    restart: always
+    volumes:
+      - nextcloud-data:/var/www/html:z
+    entrypoint: /cron.sh
+    depends_on:
+      - nextcloud-postgres
+      - nextcloud-redis
+
+  nextcloud-postgres:
+    image: postgres:latest
+    container_name: nextcloud-postgres
+    restart: always
+    volumes:
+      - nextcloud-postgres-data:/var/lib/postgresql/data
+    env_file:
+      - ../settings/nextcloud.postgres.env
+
+  nextcloud-redis:
+    image: redis:latest
+    container_name: nextcloud-redis
+    restart: always
