@@ -1,0 +1,27 @@
+# -*- mode: Python -*-
+
+app = "wechange-backend"
+
+watch_file("../settings/wechange-backend.env")
+
+dc_resource(name="wechange-postgres", labels=["db"])
+dc_resource(name="wechange-elasticsearch", labels=["db"])
+dc_resource(name="wechange-memcached", labels=["db"])
+
+docker_build(
+    ref=app,
+    context="../apps/{app}".format(app=app),
+    dockerfile="../apps/{app}/Dockerfile".format(app=app),
+    live_update=[
+        sync("../apps/{app}".format(app=app), "/app"),
+    ],
+)
+dc_resource(
+    name=app,
+    labels=["apps"],
+    resource_deps=[
+        "wechange-postgres",
+        "wechange-elasticsearch",
+        "wechange-memcached",
+    ],
+)

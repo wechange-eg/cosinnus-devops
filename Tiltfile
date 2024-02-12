@@ -1,4 +1,8 @@
 # -*- mode: Python -*-
+config.define_bool("light")
+cfg = config.parse()
+light = cfg.get("light", False)
+
 docker_cache_days = 30
 docker_cache_minutes = docker_cache_days*24*60
 docker_prune_settings(
@@ -20,22 +24,26 @@ local(
     )
 )
 
-docker_compose([
+composes = [
     "./wechange/traefik.yaml",
-    # "./wechange/wechange-frontend.yaml",
-    # "./wechange/wechange-backend.yaml",
-    "./wechange/rocketchat.yaml",
-    "./wechange/nextcloud.yaml",
-    "./wechange/etherpad.yaml",
-    "./wechange/ethercalc.yaml",
-    "./wechange/wordpress.yaml",
-])
+    "./wechange/wechange.yaml",
+]
+if not light:
+    composes += [
+        "./wechange/rocketchat.yaml",
+        "./wechange/nextcloud.yaml",
+        "./wechange/etherpad.yaml",
+        "./wechange/ethercalc.yaml",
+        "./wechange/wordpress.yaml",
+    ]
+docker_compose(composes)
 
 include("./tilts/Tiltfile.traefik")
-# include("./tilts/Tiltfile.wechange-frontend")
-# include("./tilts/Tiltfile.wechange-backend")
-include("./tilts/Tiltfile.rocketchat")
-include("./tilts/Tiltfile.nextcloud")
-include("./tilts/Tiltfile.etherpad")
-include("./tilts/Tiltfile.ethercalc")
-include("./tilts/Tiltfile.wordpress")
+include("./tilts/Tiltfile.wechange.frontend")
+include("./tilts/Tiltfile.wechange.backend")
+if not light:
+    include("./tilts/Tiltfile.rocketchat")
+    include("./tilts/Tiltfile.nextcloud")
+    include("./tilts/Tiltfile.etherpad")
+    include("./tilts/Tiltfile.ethercalc")
+    include("./tilts/Tiltfile.wordpress")

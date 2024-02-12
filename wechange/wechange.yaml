@@ -1,45 +1,66 @@
 version: "3"
 
+volumes:
+  wechange-postgres-data:
+  wechange-elasticsearch-data:
+
 services:
-  wechange-backend:
-    build: .
-    command: ["./docker-entrypoint.sh"]
-    volumes:
-      - .:/code
-      - ./devops/settings_docker.py:/code/devops/settings.py
-    ports:
-      - "8000:8000"
-    depends_on:
-      - wechange-postgres
-
-  wechange-frontend:
-    build: .
-    command: ["./docker-entrypoint.sh"]
-    volumes:
-      - .:/code
-      - ./devops/settings_docker.py:/code/devops/settings.py
-    ports:
-      - "8000:8000"
-    depends_on:
-      - wechange-backend
-
   wechange-postgres:
     image: postgres:latest
-    environment:
-      POSTGRES_USER: "postgres"
-      POSTGRES_PASSWORD: "postgres"
-    ports:
-      - 3001:5432
-    expose: ["5432"]
+    container_name: wechange-postgres
+    restart: always
+    volumes:
+      - wechange-postgres-data:/var/lib/postgresql/data
+    env_file:
+      - ../settings/wechange.postgres.env
 
   wechange-elasticsearch:
-    image: elasticsearch:1.3.9
-    ports:
-      - 3003:9200
-    expose: ["9200"]
+    image: elasticsearch:7.17.18
+    container_name: wechange-elasticsearch
+    volumes:
+      - wechange-elasticsearch-data:/usr/share/elasticsearch/data
+    env_file:
+      - ../settings/wechange.elasticsearch.env
 
   wechange-memcached:
     image: memcached:latest
-    ports:
-      - 3004:11211
-    expose: ["11211"]
+    container_name: wechange-memcached
+
+  wechange-backend:
+    image: wechange-backend
+    container_name: wechange-backend
+    env_file:
+      - ../settings/wechange.backend.env
+    volumes:
+      - ../apps/wechange-backend:/app:rw
+    links:
+      - wechange-postgres
+      - wechange-elasticsearch
+      - wechange-memcached
+    depends_on:
+      - wechange-postgres
+      - wechange-elasticsearch
+      - wechange-memcached
+    labels:
+      traefik.enable: true
+      traefik.http.routers.wechange-backend-router.rule: Host(`wechange.localhost`)
+      traefik.http.routers.wechange-backend-router.service: wechange-backend
+      traefik.http.services.wechange-backend.loadbalancer.server.port: 8000
+
+  wechange-frontend:
+    image: wechange-frontend
+    container_name: wechange-frontend
+    tty: true
+    command: --access-log --use-colors --reload --reload-dir /app/
+    env_file:
+      - ../settings/wechange.frontend.env
+    volumes:
+      - ../settings/wechange.frontend.env:/app/.env
+      - ../apps/wechange-frontend:/app:rw
+    depends_on:
+      - wechange-backend
+    labels:
+      traefik.enable: true
+      traefik.http.routers.wechange-frontend-router.rule: Host(`wechange.localhost`) && Query(`v=3`)
+      traefik.http.routers.wechange-frontend-router.service: wechange-frontend
+      traefik.http.services.wechange-frontend.loadbalancer.server.port: 80
