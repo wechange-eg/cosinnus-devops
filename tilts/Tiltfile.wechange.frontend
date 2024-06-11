@@ -1,22 +1,26 @@
 # -*- mode: Python -*-
 
 app = "wechange-frontend"
-
+local_path = "../apps/{app}".format(app=app)
+dc_path = "/opt/wechange/frontend"
 
 watch_file("../settings/wechange-frontend.env")
 
 docker_build(
     ref=app,
-    context="../apps/{app}".format(app=app),
-    dockerfile="../apps/{app}/Dockerfile".format(app=app),
+    context=local_path,
+    dockerfile="{path}/Dockerfile".format(path=local_path),
     live_update=[
-        sync("../apps/{app}".format(app=app), "/app"),
+        sync(local_path, dc_path),
     ],
+    ignore=[
+        ".next"
+    ]
 )
+
 dc_resource(
     name=app,
     labels=["apps"],
     resource_deps=[
-        "wechange-backend",
     ],
 )

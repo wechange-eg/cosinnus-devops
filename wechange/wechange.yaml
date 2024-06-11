@@ -32,7 +32,8 @@ services:
     env_file:
       - ../settings/wechange.backend.env
     volumes:
-      - ../apps/wechange-backend:/app:rw
+      - ../apps/wechange-backend:/opt/wechange/backend:rw
+      - ../apps/wechange-backend/.env.docker:/opt/wechange/backend/.env
     links:
       - wechange-postgres
       - wechange-elasticsearch
@@ -50,17 +51,13 @@ services:
   wechange-frontend:
     image: wechange-frontend
     container_name: wechange-frontend
-    tty: true
-    command: --access-log --use-colors --reload --reload-dir /app/
     env_file:
       - ../settings/wechange.frontend.env
     volumes:
-      - ../settings/wechange.frontend.env:/app/.env
-      - ../apps/wechange-frontend:/app:rw
-    depends_on:
-      - wechange-backend
+      - ../apps/wechange-frontend:/opt/wechange/frontend:rw
+      - ../apps/wechange-frontend/.env.docker:/opt/wechange/frontend/.env
     labels:
       traefik.enable: true
-      traefik.http.routers.wechange-frontend-router.rule: Host(`wechange.localhost`) && Query(`v=3`)
+      traefik.http.routers.wechange-frontend-router.rule: Host(`wechange.localhost`) && (Query(`v=3`) || PathPrefix(`/_next`) || PathPrefix(`/_next_public`) || PathPrefix(`/api/frontend`))
       traefik.http.routers.wechange-frontend-router.service: wechange-frontend
-      traefik.http.services.wechange-frontend.loadbalancer.server.port: 80
+      traefik.http.services.wechange-frontend.loadbalancer.server.port: 3000

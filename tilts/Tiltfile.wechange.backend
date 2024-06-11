@@ -1,6 +1,8 @@
 # -*- mode: Python -*-
 
 app = "wechange-backend"
+local_path = "../apps/{app}".format(app=app)
+dc_path = "/opt/wechange/backend"
 
 watch_file("../settings/wechange-backend.env")
 
@@ -10,11 +12,15 @@ dc_resource(name="wechange-memcached", labels=["db"])
 
 docker_build(
     ref=app,
-    context="../apps/{app}".format(app=app),
-    dockerfile="../apps/{app}/Dockerfile".format(app=app),
+    context=local_path,
+    dockerfile="{path}/Dockerfile".format(path=local_path),
     live_update=[
-        sync("../apps/{app}".format(app=app), "/app"),
+        sync(local_path, dc_path),
     ],
+    ignore=[
+        "static",
+        "static-collected",
+    ]
 )
 dc_resource(
     name=app,
@@ -25,3 +31,30 @@ dc_resource(
         "wechange-memcached",
     ],
 )
+
+local_resource(
+    name="{app}-migrations".format(app=app),
+    cmd=" ".join([
+        "docker exec -t {app}".format(app=app),
+        'sh -c "poetry run python manage.py migrate"',
+    ]),
+    resource_deps=[app],
+    auto_init=True,
+    trigger_mode=TRIGGER_MODE_MANUAL,
+    labels=["migrations"],
+    allow_parallel=True,
+)
+
+local_resource(
+    name="{app}-init".format(app=app),
+    cmd=" ".join([
+        "docker exec -t {app}".format(app=app),
+        'sh -c "poetry run python scripts/init_portal.py"',
+    ]),
+    resource_deps=[app, "{app}-migrations".format(app=app)],
+    auto_init=True,
+    trigger_mode=TRIGGER_MODE_MANUAL,
+    labels=["migrations"],
+    allow_parallel=True,
+)
+

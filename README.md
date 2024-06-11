@@ -12,9 +12,9 @@ This repo serves as a starting point for initiating a wechange portal. wechange 
  * [Tilt](https://docs.tilt.dev/install.html)
 
 ### 2. Clone this repo
-`git clone git@github.com:wechange-eg/cosinnus-devops.git`
+`git@git.wechange.de:code/wechange-stack.git`
 
-### 3. Clone wechange frontend and backend
+### 3. Clone wechange frontend and backend (into apps folder)
 ```
 cd cosinnus-devops/apps
 git clone git@git.wechange.de:code/portals/wechange-frontend.git
@@ -26,6 +26,10 @@ cd ..
 ```
 tilt up
 ```
+
+> If you just want to build/run the wechange frontend & backend, without 3rd party services (Wordpress, Rocket.Chat, Nextcloud, Etherpad, Ethercalc), you can use `tilt up -- --light` instead.
+
+Enter space or visit your browser at http://localhost:10350 to open the Tilt UI.
 
 ### 5. Access platform
 
