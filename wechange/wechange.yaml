@@ -58,6 +58,6 @@ services:
       - ../apps/wechange-frontend/.env.docker:/opt/wechange/frontend/.env
     labels:
       traefik.enable: true
-      traefik.http.routers.wechange-frontend-router.rule: Host(`wechange.localhost`) && (Query(`v=3`) || PathPrefix(`/_next`) || PathPrefix(`/_next_public`) || PathPrefix(`/api/frontend`))
+      traefik.http.routers.wechange-frontend-router.rule: Host(`wechange.localhost`) && (Query(`v=3`) || PathPrefix(`/_next`) || PathPrefix(`/_next_public`) || PathPrefix(`/__nextjs_original-stack-frame`) || PathPrefix(`/api/frontend`))
       traefik.http.routers.wechange-frontend-router.service: wechange-frontend
       traefik.http.services.wechange-frontend.loadbalancer.server.port: 3000
