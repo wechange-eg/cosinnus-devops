@@ -1,6 +1,6 @@
 # this file only contains requirements not contained in the cosinnus projects' setup.py files
 
-gunicorn==19.4.1
+gunicorn==22.0.0
 psycopg2==2.8.3
 elasticsearch==1.7.0
 pyelasticsearch==1.4
